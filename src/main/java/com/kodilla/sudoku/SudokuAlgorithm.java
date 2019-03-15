@@ -14,7 +14,7 @@ public class SudokuAlgorithm {
 
     public Stream<SudokuElement> streamElements() {
         return board.getRows().stream()
-                .flatMap(row-> row.getElements().stream());
+                .flatMap(row -> row.getElements().stream());
     }
 
     public boolean isNotSolved() {
@@ -22,7 +22,7 @@ public class SudokuAlgorithm {
                 .anyMatch(element -> element.getValue() == SudokuElement.EMPTY);
     }
 
-    public boolean existEmptyElementWithoutAnyPossibleValue() {
+    public boolean isUnresolvable() {
         return streamElements()
                 .filter(element -> element.getValue() == SudokuElement.EMPTY)
                 .anyMatch(element -> element.getPossibleValues().isEmpty());
@@ -30,12 +30,12 @@ public class SudokuAlgorithm {
 
     public boolean insertedWithoutGuessing() {
         Optional<Boolean> insertedWithoutGuessing;
-            insertedWithoutGuessing = streamElements()
-                    .filter(element -> element.getValue() == SudokuElement.EMPTY)
-                    .filter(element -> element.getPossibleValues().size() == 1)
-                    .findFirst()
-                    .map(element -> addToBacktrack(board, element))
-                    .map(element -> board.insertValue(element.getRowNumber(), element.getColumnNumber(), element.getPossibleValues().get(0)));
+        insertedWithoutGuessing = streamElements()
+                .filter(element -> element.getValue() == SudokuElement.EMPTY)
+                .filter(element -> element.getPossibleValues().size() == 1)
+                .findFirst()
+                .map(element -> addToBacktrack(board, element))
+                .map(element -> board.insertValue(element.getRowNumber(), element.getColumnNumber(), element.getPossibleValues().get(0)));
         return insertedWithoutGuessing.orElse(false);
     }
 
@@ -53,7 +53,7 @@ public class SudokuAlgorithm {
         System.out.println(board);
         while (isNotSolved()) {
             while (insertedWithoutGuessing()) {
-                while (existEmptyElementWithoutAnyPossibleValue()) {
+                while (isUnresolvable()) {
                     this.board = backtrack.pop().getUpdatedBoard();
                 }
             }
@@ -67,14 +67,14 @@ public class SudokuAlgorithm {
         System.out.println(board);
     }
 
-    private SudokuElement addToBacktrack(SudokuBoard board, SudokuElement element){
+    private SudokuElement addToBacktrack(SudokuBoard board, SudokuElement element) {
         SudokuBoard clonedBoard = board;
         try {
             clonedBoard = board.deepCopy();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        backtrack.push(new SudokuBackup(clonedBoard, element.getRowNumber(), element.getColumnNumber() ,element.getPossibleValues().get(0)));
+        backtrack.push(new SudokuBackup(clonedBoard, element.getRowNumber(), element.getColumnNumber(), element.getPossibleValues().get(0)));
         return element;
     }
 }

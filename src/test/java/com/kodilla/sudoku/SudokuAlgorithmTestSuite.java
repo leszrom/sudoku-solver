@@ -83,6 +83,6 @@ public class SudokuAlgorithmTestSuite {
         board.insertValue(1, 8, 8);
         board.insertValue(2, 9, 9);
         //Then
-        Assert.assertTrue(algorithm.existEmptyElementWithoutAnyPossibleValue());
+        Assert.assertTrue(algorithm.isUnresolvable());
     }
 }
