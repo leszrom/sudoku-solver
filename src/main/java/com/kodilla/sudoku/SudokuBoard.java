@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SudokuBoard extends Prototype {
-    public static final int SUDOKU_FIRST_ROW = 1;
-    public static final int SUDOKU_LAST_ROW = 9;
-    public static final int SUDOKU_FIRST_COLUMN = 1;
-    public static final int SUDOKU_LAST_COLUMN = 9;
+    private static final int SUDOKU_FIRST_ROW = 1;
+    private static final int SUDOKU_LAST_ROW = 9;
+    private static final int SUDOKU_FIRST_COLUMN = 1;
+    private static final int SUDOKU_LAST_COLUMN = 9;
 
     private List<SudokuRow> rows = new ArrayList<>(SUDOKU_LAST_ROW);
 
